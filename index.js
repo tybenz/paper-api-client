@@ -2,7 +2,7 @@ var url = require( 'url' );
 var path = require( 'path' );
 var extend = require( 'util' )._extend;
 
-var methods = {
+var methods = exports.methods = {
     setHost: function( host ) {
         this.host = host;
     },
@@ -54,15 +54,12 @@ var methods = {
     }
 };
 
-var mixin = function( klass ) {
+var mixin = exports.mixin = function( klass ) {
     klass.prototype = extend( klass.prototype, methods );
 
     return klass;
 }
 
-exports.mixin = mixin;
-exports.methods = methods;
-
-exports.extend = function( obj ) {
+var customExtend = exports.extend = function( obj ) {
     return extend( obj, methods );
 };
