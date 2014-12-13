@@ -25,10 +25,6 @@ var methods = {
         var count = 2;
         var arg;
 
-        var argList = [];
-        for ( var i = 2, len = arguments.length; i < len; i++ ) {
-            argList.push( arguments[ i ] );
-        }
         while( match = regex.exec( endPoint ) ) {
             newPath += endPoint.substring( lastIndex, match.index );
             if ( arg = arguments[ count ] ) {
