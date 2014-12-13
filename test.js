@@ -54,5 +54,25 @@ describe( 'API Client', function() {
 
             done();
         });
+
+        it( 'should return undefined if endpoint name is invalid', function( done ) {
+            var client = apiClient.extend({
+                host: 'host.com',
+                protocol: 'https:',
+                defaultParams: {
+                    api_key: 'ApiKey'
+                },
+                endPoints: {
+                    index: '/v1/items',
+                    item: 'v1/items/:id'
+                },
+                getIndex: function( cb ) {
+                    return request( this.url( 'index' ), cb );
+                }
+            });
+
+            assert( client.url( 'foobar' ) === undefined );
+            done();
+        });
     });
 });

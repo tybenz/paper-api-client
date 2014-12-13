@@ -17,6 +17,11 @@ var methods = exports.methods = {
 
     url: function( endPoint, params ) {
         endPoint = this.endPoints[ endPoint ];
+
+        if ( !endPoint ) {
+            return;
+        }
+
         params = params || {};
 
         var regex = /\:[^\/\*]+/g;
