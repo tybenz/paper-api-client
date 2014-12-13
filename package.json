@@ -1,0 +1,22 @@
+{
+  "name": "paper-api-client",
+  "version": "1.0.0",
+  "description": "Set of api client mixins",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tybenz/paper-api-client.git"
+  },
+  "author": "Tyler Benziger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tybenz/paper-api-client/issues"
+  },
+  "homepage": "https://github.com/tybenz/paper-api-client",
+  "devDependencies": {
+    "mocha": "^2.0.1"
+  }
+}
