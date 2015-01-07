@@ -16,6 +16,8 @@ var methods = exports.methods = {
     },
 
     url: function( endPoint, params ) {
+        var args = Array.prototype.slice.call( arguments );
+
         endPoint = this.endPoints[ endPoint ];
 
         if ( !endPoint ) {
@@ -24,30 +26,25 @@ var methods = exports.methods = {
 
         params = params || {};
 
-        var regex = /\:[^\/\*]+/g;
-        var lastIndex = 0;
-        var newPath = '';
-        var count = 2;
         var arg;
-
-        while( match = regex.exec( endPoint ) ) {
-            newPath += endPoint.substring( lastIndex, match.index );
-            if ( arg = arguments[ count ] ) {
-                if ( typeof arg !== 'string' && typeof arg !== 'number' ) {
-                    throw new Error( 'URL helper must be called with string arguments only' );
-                }
-
-                newPath += arg;
-            } else {
-                throw new Error( 'URL helper must be called with same number of arguments as the path\'s parameters' );
+        var count = 2;
+        var failed = false;
+        var newPath = endPoint.replace( /\:([^\/]*)/g, function( match, id ) {
+            arg = args[ count++ ];
+            if ( typeof arg !== 'string' && typeof arg !== 'number' ) {
+                failed = true;
+                return;
             }
-            lastIndex = match.index + match[ 0 ].length;
-            count++;
-        }
-        newPath += endPoint.substring( lastIndex );
 
-        if ( !endPoint ) {
-            return;
+            return arg;
+        });
+
+        if ( count > 2 && count != args.length ) {
+            throw new Error( 'URL helper must be called with same number of path params to match endpoint string' );
+        }
+
+        if ( failed ) {
+            throw new Error( 'URL helper must be called with string arguments only' );
         }
 
         return url.format({

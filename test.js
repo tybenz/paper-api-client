@@ -91,5 +91,37 @@ describe( 'API Client', function() {
             assert( defaults.new_param === undefined );
             assert( url === 'https://host.com/v1/items?api_key=ApiKey&new_param=true' );
         });
+
+        it( 'should throw an error when the args are incorrect', function() {
+            var client = apiClient.extend({
+                host: 'host.com',
+                protocol: 'https:',
+                defaultParams: {
+                    api_key: 'ApiKey'
+                },
+                endPoints: {
+                    index: '/v1/items',
+                    item: 'v1/items/:id'
+                },
+                getIndex: function( cb ) {
+                    return request( this.url( 'index' ), cb );
+                }
+            });
+
+            try {
+                // item requires 1 param
+                // should be client.url( 'item', {}, id )
+                var url = client.url( 'item' );
+            } catch ( err ) {
+                assert( err );
+            }
+
+            try {
+                // must pass only strings or numbers as path params
+                var url = client.url( 'item', {}, { foo: 'bar' } );
+            } catch( err ) {
+                assert( err );
+            }
+        });
     });
 });
