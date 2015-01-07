@@ -55,7 +55,7 @@ describe( 'API Client', function() {
             done();
         });
 
-        it( 'should return undefined if endpoint name is invalid', function( done ) {
+        it( 'should return undefined if endpoint name is invalid', function() {
             var client = apiClient.extend({
                 host: 'host.com',
                 protocol: 'https:',
@@ -72,7 +72,24 @@ describe( 'API Client', function() {
             });
 
             assert( client.url( 'foobar' ) === undefined );
-            done();
+        });
+
+        it( 'shouldn\'t modify default params', function() {
+            var client = apiClient.extend({
+                host: 'host.com',
+                protocol: 'https:',
+                defaultParams: {
+                    api_key: 'ApiKey'
+                },
+                endPoints: {
+                    index: '/v1/items'
+                }
+            });
+
+            var defaults = client.defaultParams;
+            var url = client.url( 'index', { new_param: 'true' } );
+            assert( defaults.new_param === undefined );
+            assert( url === 'https://host.com/v1/items?api_key=ApiKey&new_param=true' );
         });
     });
 });

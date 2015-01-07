@@ -54,7 +54,7 @@ var methods = exports.methods = {
             protocol: this.protocol || 'http:',
             hostname: this.host,
             pathname: newPath,
-            query: extend( this.defaultParams || {}, params )
+            query: extend( extend( {}, this.defaultParams ), params )
         });
     }
 };
