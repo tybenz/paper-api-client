@@ -49,7 +49,7 @@ var methods = exports.methods = {
 
         return url.format({
             protocol: this.protocol || 'http:',
-            hostname: this.host,
+            host: this.host,
             pathname: newPath,
             query: extend( extend( {}, this.defaultParams ), params )
         });
