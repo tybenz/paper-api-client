@@ -15,6 +15,16 @@ var methods = exports.methods = {
         this.protocol = protocol;
     },
 
+    request: function( options ) {
+        var headers = {
+            'Authorization': options.token
+        }
+        delete options.token;
+        options.headers = _.extend( {}, headers, options.headers );
+
+        return Utils.requestAsync( options );
+    },
+
     url: function( endPoint, params ) {
         var args = Array.prototype.slice.call( arguments );
 
@@ -29,15 +39,16 @@ var methods = exports.methods = {
         var arg;
         var count = 2;
         var failed = false;
-        var newPath = endPoint.replace( /\:([^\/]*)/g, function( match, id ) {
+        var newPath = endPoint.replace( /[^\\]{1}\:([^\/]*)/g, function( match, id ) {
             arg = args[ count++ ];
             if ( typeof arg !== 'string' && typeof arg !== 'number' ) {
                 failed = true;
                 return;
             }
 
-            return arg;
+            return '/' + arg;
         });
+        newPath = newPath.replace( /\\\:/, ':' );
 
         if ( count > 2 && count != args.length ) {
             throw new Error( 'URL helper must be called with same number of path params to match endpoint string' );
