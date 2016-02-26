@@ -15,16 +15,6 @@ var methods = exports.methods = {
         this.protocol = protocol;
     },
 
-    request: function( options ) {
-        var headers = {
-            'Authorization': options.token
-        }
-        delete options.token;
-        options.headers = _.extend( {}, headers, options.headers );
-
-        return Utils.requestAsync( options );
-    },
-
     url: function( endPoint, params ) {
         var args = Array.prototype.slice.call( arguments );
 
